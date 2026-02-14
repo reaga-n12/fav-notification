@@ -14,6 +14,7 @@ body {
     color: white;
     text-align: center;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 .section {
@@ -62,39 +63,64 @@ button:hover {
     transform: scale(1.1);
 }
 
+p {
+    max-width: 90%;
+    margin: 20px auto;
+    line-height: 1.6;
+    word-wrap: break-word;
+    font-size: 1.1em;
+}
+
+/* Hearts general style */
 .heart {
     position: fixed;
     color: pink;
-    animation: float 6s linear infinite;
+    text-shadow: 0 0 10px #ff99cc, 0 0 20px #ff66aa;
 }
 
-@keyframes float {
-    0% { transform: translateY(100vh) scale(1); opacity: 1; }
-    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-}
-
-/* Explosion Screen */
+/* Final explosion screen */
 #explosionScreen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: black;
+    background: linear-gradient(135deg, #5b2e8a, #8e44ad);
+    background-size: 400% 400%;
     display: none;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 9999;
     text-align: center;
+    animation: gradientMove 20s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
 }
 
 #loveText {
     font-size: 4em;
     color: #ff4da6;
-    text-shadow: 0 0 30px #ff00ff;
-    opacity: 0;
-    transition: 2s;
+    text-shadow: 0 0 20px #ff66aa, 0 0 40px #ff00ff;
+    opacity: 1;
+    animation: textPulse 2s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+    0%, 100% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .section { padding: 50px 15px; }
+    h1 { font-size: 2em; }
+    .glow { font-size: 2.5em; }
+    #loveText { font-size: 2.5em; }
 }
 </style>
 </head>
@@ -150,29 +176,28 @@ button:hover {
 </div>
 
 <div id="explosionScreen">
-    <h1 id="loveText">
-        Peachy…<br><br>
-        You are my peace.<br>
-        My excitement.<br>
-        My answered prayer.<br><br>
-        I LOVE YOU.<br>
-        Always. 💖
-    </h1>
+    <h1 id="loveText"></h1>
 </div>
 
 <script>
+// Background music fade-in
 function startExperience() {
     const music = document.getElementById("bgMusic");
+    music.volume = 0;
     music.play();
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+        if(vol < 1){ vol += 0.02; music.volume = vol; } 
+        else { clearInterval(fadeIn); }
+    }, 100);
 
     const sections = document.querySelectorAll('.section');
     sections.forEach((sec, i) => {
-        setTimeout(() => {
-            sec.classList.add('show');
-        }, i * 1500);
+        setTimeout(() => { sec.classList.add('show'); }, i * 1500);
     });
 }
 
+// Floating hearts during main experience
 function createHearts() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -180,51 +205,75 @@ function createHearts() {
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = Math.random() * 20 + 10 + "px";
     document.body.appendChild(heart);
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
+    setTimeout(() => { heart.remove(); }, 6000);
 }
-
 setInterval(createHearts, 500);
 
+// Final screen with 3D parallax hearts
 function loveExplosion() {
     const screen = document.getElementById("explosionScreen");
     const text = document.getElementById("loveText");
-
     screen.style.display = "flex";
+    text.innerHTML = `
+        Peachy…<br><br>
+        You are my peace.<br>
+        My excitement.<br>
+        My answered prayer.<br><br>
+        I LOVE YOU.<br>
+        Always. 💖
+    `;
 
-    setTimeout(() => {
-        text.style.opacity = "1";
-    }, 500);
-
-    for (let i = 0; i < 200; i++) {
-        createConfetti();
-    }
+    startFinalHearts();
 }
 
-function createConfetti() {
-    const confetti = document.createElement("div");
-    confetti.style.position = "fixed";
-    confetti.style.width = "10px";
-    confetti.style.height = "10px";
-    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-    confetti.style.top = "0";
-    confetti.style.left = Math.random() * window.innerWidth + "px";
-    confetti.style.opacity = "1";
-    confetti.style.zIndex = "9999";
-    confetti.style.borderRadius = "50%";
+// Floating hearts with 3D parallax
+function startFinalHearts() {
+    let count = 0;
+    const maxHearts = window.innerWidth < 480 ? 50 : 100;
+    const layers = [
+        { speed: 2, scaleFactor: 0.01 },  // near
+        { speed: 1.5, scaleFactor: 0.007 }, // mid
+        { speed: 1, scaleFactor: 0.004 }   // far
+    ];
 
-    document.body.appendChild(confetti);
+    const heartInterval = setInterval(() => {
+        if(count >= maxHearts){ clearInterval(heartInterval); }
+        const layer = layers[Math.floor(Math.random()*layers.length)];
+        createFloatingHeart(layer);
+        count++;
+    }, 150);
+}
 
-    let fall = setInterval(() => {
-        confetti.style.top = parseInt(confetti.style.top) + 5 + "px";
-        confetti.style.opacity -= 0.02;
+function createFloatingHeart(layer) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.style.position = "fixed";
+    const size = 10 + Math.random()*20;
+    heart.style.fontSize = `${size}px`;
+    heart.style.left = `${Math.random() * window.innerWidth}px`;
+    heart.style.top = "-50px";
+    heart.style.opacity = 1;
+    heart.style.zIndex = 9999;
+    heart.style.transform = `rotateX(${Math.random()*40-20}deg) rotateY(${Math.random()*40-20}deg)`;
+    document.body.appendChild(heart);
 
-        if (confetti.style.opacity <= 0) {
-            clearInterval(fall);
-            confetti.remove();
-        }
-    }, 20);
+    const speed = layer.speed;
+    const drift = (Math.random()-0.5)*2;
+    const scaleFactor = layer.scaleFactor;
+
+    function move() {
+        const top = parseFloat(heart.style.top);
+        const left = parseFloat(heart.style.left);
+        let fontSize = parseFloat(heart.style.fontSize);
+        if(top < window.innerHeight + 50){
+            heart.style.top = top + speed + "px";
+            heart.style.left = left + drift + "px";
+            heart.style.fontSize = fontSize + scaleFactor + "px"; // zoom effect
+            heart.style.opacity -= 0.002;
+            requestAnimationFrame(move);
+        } else { heart.remove(); }
+    }
+    move();
 }
 </script>
 
