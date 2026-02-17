@@ -56,31 +56,13 @@ body{
     opacity:0.9;
 }
 
-/* Volume hint special style */
+/* Volume instruction */
 #volumeHint{
-    opacity:0.85;
+    opacity:0.9;
     font-size:0.9rem;
     margin-bottom:15px;
     color:#ffb6f9;
     text-shadow:0 0 10px #ff00ff;
-    animation:glowHint 2s infinite;
-}
-
-@keyframes glowHint{
-    0%,100%{text-shadow:0 0 10px #ff00ff;}
-    50%{text-shadow:0 0 25px #ff00ff;}
-}
-
-.scrollHint{
-    margin-top:15px;
-    font-size:0.85rem;
-    opacity:0.6;
-    animation:bounce 2s infinite;
-}
-
-@keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(6px);}
 }
 
 /* Sections */
@@ -195,9 +177,8 @@ body::after{
         Today… the world feels different. <br>
         Because someone extraordinary was born.
     </p>
-    <p id="volumeHint">🎧 Make sure your volume is up before pressing Begin</p>
+    <p id="volumeHint">🎧 Increase your volume before pressing Begin</p>
     <button onclick="startExperience()">Begin</button>
-    <div class="scrollHint">Scroll down slowly ↓</div>
 </div>
 
 <!-- Main Content -->
