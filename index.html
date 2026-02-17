@@ -6,123 +6,147 @@
 <title>For Peachy 💖</title>
 
 <style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Georgia', serif;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color: white;
-    text-align: center;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.section {
-    padding: 80px 20px;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: 1.5s ease;
+html{
+    scroll-behavior:smooth;
 }
 
-.show {
-    opacity: 1;
-    transform: translateY(0);
+body{
+    font-family:'Georgia',serif;
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color:white;
+    text-align:center;
+    overflow-x:hidden;
 }
 
-h1 {
-    font-size: 2.8em;
-    letter-spacing: 2px;
+/* Intro Overlay */
+#introOverlay{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:10000;
+    transition:opacity 1.5s ease;
 }
 
-.glow {
-    font-size: 3.5em;
-    color: #ffb6f9;
-    text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
-    animation: pulse 2s infinite;
+.fadeOut{
+    opacity:0;
+    pointer-events:none;
 }
 
-@keyframes pulse {
-    0% { text-shadow: 0 0 10px #ff00ff; }
-    50% { text-shadow: 0 0 40px #ff00ff; }
-    100% { text-shadow: 0 0 10px #ff00ff; }
+#introOverlay h1{
+    font-size:clamp(1.8rem,6vw,3rem);
+    margin-bottom:20px;
+    text-shadow:0 0 20px #ff00ff;
 }
 
-button {
-    padding: 15px 40px;
-    font-size: 1.1em;
-    background: #ff4da6;
-    border: none;
-    border-radius: 30px;
-    color: white;
-    cursor: pointer;
-    transition: 0.4s;
+#introOverlay p{
+    opacity:0.8;
+    margin-bottom:30px;
 }
 
-button:hover {
-    background: #ff1a8c;
-    transform: scale(1.1);
+/* Sections */
+.section{
+    min-height:100vh;
+    padding:80px 25px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    transform:translateY(30px);
+    transition:1s ease;
 }
 
-p {
-    max-width: 90%;
-    margin: 20px auto;
-    line-height: 1.6;
-    word-wrap: break-word;
-    font-size: 1.1em;
+.section.show{
+    opacity:1;
+    transform:translateY(0);
 }
 
-/* Hearts general style */
-.heart {
-    position: fixed;
-    color: pink;
-    text-shadow: 0 0 10px #ff99cc, 0 0 20px #ff66aa;
+h1{
+    font-size:clamp(1.8rem,5vw,3rem);
+    margin-bottom:20px;
 }
 
-/* Final explosion screen */
-#explosionScreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #5b2e8a, #8e44ad);
-    background-size: 400% 400%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-    text-align: center;
-    animation: gradientMove 20s ease infinite;
+p{
+    max-width:500px;
+    line-height:1.8;
+    font-size:clamp(1rem,4vw,1.2rem);
 }
 
-@keyframes gradientMove {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+/* Glow */
+.glow{
+    font-size:clamp(2.2rem,6vw,3.5rem);
+    color:#ffb6f9;
+    text-shadow:0 0 20px #ff00ff,0 0 40px #ff00ff;
+    animation:pulse 2s infinite;
 }
 
-#loveText {
-    font-size: 4em;
-    color: #ff4da6;
-    text-shadow: 0 0 20px #ff66aa, 0 0 40px #ff00ff;
-    opacity: 1;
-    animation: textPulse 2s ease-in-out infinite;
+@keyframes pulse{
+    0%{text-shadow:0 0 10px #ff00ff;}
+    50%{text-shadow:0 0 40px #ff00ff;}
+    100%{text-shadow:0 0 10px #ff00ff;}
 }
 
-@keyframes textPulse {
-    0%, 100% {transform: scale(1);}
-    50% {transform: scale(1.05);}
+/* Button */
+button{
+    padding:15px 40px;
+    font-size:1rem;
+    background:#ff4da6;
+    border:none;
+    border-radius:30px;
+    color:white;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-/* Mobile adjustments */
-@media (max-width: 480px) {
-    .section { padding: 50px 15px; }
-    h1 { font-size: 2em; line-height: 1.2em; }
-    .glow { font-size: 2.5em; }
-    p { font-size: 1em; line-height: 1.5em; }
-    #loveText { font-size: 2.5em; }
-    button { padding: 12px 30px; font-size: 1em; }
+button:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+}
+
+button:hover{
+    background:#ff1a8c;
+    transform:scale(1.05);
+}
+
+/* Hearts */
+.heart{
+    position:fixed;
+    bottom:-10px;
+    pointer-events:none;
+    animation:floatUp 6s linear forwards;
+}
+
+@keyframes floatUp{
+    from{transform:translateY(0) scale(1);opacity:1;}
+    to{transform:translateY(-100vh) scale(1.6);opacity:0;}
+}
+
+/* Final Screen */
+#explosionScreen{
+    position:fixed;
+    inset:0;
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:9999;
+}
+
+#loveText{
+    font-size:clamp(2rem,6vw,4rem);
+    color:#ff4da6;
+    text-shadow:0 0 30px #ff00ff;
 }
 </style>
 </head>
@@ -133,10 +157,17 @@ p {
     <source src="song.mp3" type="audio/mpeg">
 </audio>
 
-<div class="section show">
+<!-- Intro -->
+<div id="introOverlay">
+    <h1>For Peachy 💖</h1>
+    <p>🎧 Turn your volume up… and press Begin</p>
+    <button id="beginBtn" onclick="startExperience()">Begin</button>
+</div>
+
+<!-- Sections -->
+<div class="section">
     <h1>Today… The World Feels Different</h1>
     <p>Because someone extraordinary was born.</p>
-    <button onclick="startExperience()">Begin</button>
 </div>
 
 <div class="section">
@@ -146,28 +177,28 @@ p {
 <div class="section">
     <h1>To The Girl Who Changed My World</h1>
     <p>
-        Peachy…  
+        Peachy… <br><br>
         I don’t think you truly understand what your presence does to my life.
         The way you speak. The way you laugh. The way you exist.
         <br><br>
         Loving you feels like discovering a song I never want to stop playing.
-        It feels like peace. Like excitement. Like purpose.
+        It feels like peace. Like excitement. Like magic.
         <br><br>
         Even today, when I’m not at my strongest physically,
         my heart is stronger than ever when it comes to you.
         <br><br>
         You are not just growing older today.
-        You are becoming even more powerful, more beautiful,
-        and more unforgettable.
+        You are becoming even more radiant, more amazing,
+        and even more unforgettable.
     </p>
 </div>
 
 <div class="section">
     <h1>The Future With You</h1>
     <p>
-        I see more laughter.
-        I see growth.
-        I see memories we haven’t even created yet.
+        I see more laughter.<br>
+        I see adventures we haven’t yet dreamed of.<br>
+        I see a future full of moments only we can share.
     </p>
 </div>
 
@@ -177,105 +208,89 @@ p {
 </div>
 
 <div id="explosionScreen">
-    <h1 id="loveText"></h1>
-</div>
-
-<script>
-// Background music fade-in
-function startExperience() {
-    const music = document.getElementById("bgMusic");
-    music.volume = 0;
-    music.play();
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-        if(vol < 1){ vol += 0.02; music.volume = vol; } 
-        else { clearInterval(fadeIn); }
-    }, 100);
-
-    const sections = document.querySelectorAll('.section');
-    sections.forEach((sec, i) => {
-        setTimeout(() => { sec.classList.add('show'); }, i * 1500);
-    });
-}
-
-// Floating hearts during main experience
-function createHearts() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 10 + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => { heart.remove(); }, 6000);
-}
-setInterval(createHearts, 500);
-
-// Final screen with 3D parallax hearts
-function loveExplosion() {
-    const screen = document.getElementById("explosionScreen");
-    const text = document.getElementById("loveText");
-    screen.style.display = "flex";
-    text.innerHTML = `
+    <h1 id="loveText">
         Peachy…<br><br>
         You are my peace.<br>
         My excitement.<br>
         My answered prayer.<br><br>
         I LOVE YOU.<br>
         Always. 💖
-    `;
+    </h1>
+</div>
 
-    startFinalHearts();
+<script>
+
+let heartsInterval;
+let started=false;
+
+/* Start */
+function startExperience(){
+    if(started) return;
+    started=true;
+
+    const overlay=document.getElementById("introOverlay");
+    const btn=document.getElementById("beginBtn");
+    const music=document.getElementById("bgMusic");
+    const sections=document.querySelectorAll('.section');
+
+    btn.disabled=true;
+
+    music.play().catch(()=>{});
+
+    overlay.classList.add("fadeOut");
+
+    setTimeout(()=>{
+        overlay.style.display="none";
+
+        sections.forEach((sec,i)=>{
+            setTimeout(()=>{
+                sec.classList.add("show");
+            },i*700);
+        });
+
+        window.scrollTo({
+            top:window.innerHeight,
+            behavior:"smooth"
+        });
+
+        startHearts();
+
+    },1500);
 }
 
-// Floating hearts with 3D parallax
-function startFinalHearts() {
-    let count = 0;
-    const maxHearts = window.innerWidth < 480 ? 50 : 100;
-    const layers = [
-        { speed: 2, scaleFactor: 0.01 },  // near
-        { speed: 1.5, scaleFactor: 0.007 }, // mid
-        { speed: 1, scaleFactor: 0.004 }   // far
-    ];
-
-    const heartInterval = setInterval(() => {
-        if(count >= maxHearts){ clearInterval(heartInterval); }
-        const layer = layers[Math.floor(Math.random()*layers.length)];
-        createFloatingHeart(layer);
-        count++;
-    }, 150);
+/* Background Hearts */
+function startHearts(){
+    heartsInterval=setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="💜";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(Math.random()*18+14)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+    },1200);
 }
 
-function createFloatingHeart(layer) {
-    const heart = document.createElement("div");
-    heart.innerHTML = "💖";
-    heart.style.position = "fixed";
-    const size = 10 + Math.random()*20;
-    heart.style.fontSize = `${size}px`;
-    heart.style.left = `${Math.random() * window.innerWidth}px`;
-    heart.style.top = "-50px";
-    heart.style.opacity = 1;
-    heart.style.zIndex = 9999;
-    heart.style.transform = `rotateX(${Math.random()*40-20}deg) rotateY(${Math.random()*40-20}deg)`;
-    document.body.appendChild(heart);
+/* Final Explosion */
+function loveExplosion(){
+    clearInterval(heartsInterval);
 
-    const speed = layer.speed;
-    const drift = (Math.random()-0.5)*2;
-    const scaleFactor = layer.scaleFactor;
+    const screen=document.getElementById("explosionScreen");
+    screen.style.display="flex";
 
-    function move() {
-        const top = parseFloat(heart.style.top);
-        const left = parseFloat(heart.style.left);
-        let fontSize = parseFloat(heart.style.fontSize);
-        if(top < window.innerHeight + 50){
-            heart.style.top = top + speed + "px";
-            heart.style.left = left + drift + "px";
-            heart.style.fontSize = fontSize + scaleFactor + "px"; // zoom effect
-            heart.style.opacity -= 0.002;
-            requestAnimationFrame(move);
-        } else { heart.remove(); }
+    for(let i=0;i<100;i++){
+        setTimeout(()=>{
+            const heart=document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML="💖";
+            heart.style.left=Math.random()*100+"vw";
+            heart.style.fontSize=(Math.random()*35+20)+"px";
+            document.body.appendChild(heart);
+            setTimeout(()=>heart.remove(),6000);
+        },i*35);
     }
-    move();
 }
+
 </script>
 
 </body>
