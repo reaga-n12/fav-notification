@@ -35,6 +35,7 @@ body{
     align-items:center;
     z-index:10000;
     transition:opacity 1.5s ease;
+    padding:30px;
 }
 
 .fadeOut{
@@ -49,21 +50,32 @@ body{
 }
 
 #introOverlay p{
-    opacity:0.8;
-    margin-bottom:30px;
-    font-size:0.95rem;
+    max-width:400px;
+    line-height:1.7;
+    margin-bottom:25px;
+    opacity:0.9;
+}
+
+.scrollHint{
+    margin-top:15px;
+    font-size:0.85rem;
+    opacity:0.6;
+    animation:bounce 2s infinite;
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
 }
 
 /* Sections */
 .section{
-    min-height:100vh;
-    padding:100px 20px 120px 20px;
+    padding:70px 20px; /* reduced top spacing */
     display:flex;
     flex-direction:column;
-    justify-content:center;
     align-items:center;
     opacity:0;
-    transform:translateY(30px);
+    transform:translateY(20px);
     transition:1s ease;
 }
 
@@ -74,31 +86,17 @@ body{
 
 h1{
     font-size:clamp(1.9rem,6vw,3rem);
-    margin-bottom:28px;
+    margin-bottom:15px; /* reduced gap */
     line-height:1.3;
 }
 
 p{
     max-width:90%;
-    line-height:1.9;
+    line-height:1.8;
     font-size:clamp(1.05rem,4.5vw,1.2rem);
-    letter-spacing:0.3px;
 }
 
-/* Scroll Hint */
-.scrollHint{
-    margin-top:50px;
-    font-size:0.9rem;
-    opacity:0.6;
-    animation:bounce 2s infinite;
-}
-
-@keyframes bounce{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(8px);}
-}
-
-/* Glow Title */
+/* Glow */
 .glow{
     font-size:clamp(2.2rem,6vw,3.5rem);
     color:#ffb6f9;
@@ -114,7 +112,7 @@ p{
 
 /* Button */
 button{
-    padding:15px 40px;
+    padding:14px 35px;
     font-size:1rem;
     background:#ff4da6;
     border:none;
@@ -122,11 +120,6 @@ button{
     color:white;
     cursor:pointer;
     transition:0.3s;
-}
-
-button:disabled{
-    opacity:0.6;
-    cursor:not-allowed;
 }
 
 button:hover{
@@ -164,13 +157,6 @@ button:hover{
     color:#ff4da6;
     text-shadow:0 0 30px #ff00ff;
 }
-
-/* Bottom breathing space */
-body::after{
-    content:"";
-    display:block;
-    height:80px;
-}
 </style>
 </head>
 
@@ -183,17 +169,15 @@ body::after{
 <!-- Intro -->
 <div id="introOverlay">
     <h1>For Peachy 💖</h1>
-    <p>🎧 Turn your volume up… and press Begin</p>
-    <button id="beginBtn" onclick="startExperience()">Begin</button>
+    <p>
+        Today… the world feels different. <br>
+        Because someone extraordinary was born.
+    </p>
+    <button onclick="startExperience()">Begin</button>
+    <div class="scrollHint">Scroll down slowly ↓</div>
 </div>
 
-<!-- Sections -->
-
-<div class="section">
-    <h1>Today… The World Feels Different</h1>
-    <p>Because someone extraordinary was born.</p>
-    <div class="scrollHint">Scroll ↓</div>
-</div>
+<!-- Main Content -->
 
 <div class="section">
     <h1 class="glow">Happy Birthday Peachy 💖</h1>
@@ -246,18 +230,12 @@ body::after{
 <script>
 
 let heartsInterval;
-let started=false;
 
 function startExperience(){
-    if(started) return;
-    started=true;
-
     const overlay=document.getElementById("introOverlay");
-    const btn=document.getElementById("beginBtn");
     const music=document.getElementById("bgMusic");
     const sections=document.querySelectorAll('.section');
 
-    btn.disabled=true;
     music.play().catch(()=>{});
 
     overlay.classList.add("fadeOut");
@@ -267,7 +245,7 @@ function startExperience(){
         sections.forEach((sec,i)=>{
             setTimeout(()=>{
                 sec.classList.add("show");
-            },i*700);
+            },i*500);
         });
         startHearts();
     },1500);
